@@ -11,9 +11,10 @@ export function NavBar() {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/">
           <a className="flex items-center space-x-2">
-            <Car className="h-6 w-6 text-primary" />
-            <span className="font-bold text-lg bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
-              AutoDealer
+            <Car className="h-6 w-6 text-red-600" />
+            <span className="font-bold text-lg">
+              <span className="text-red-600">China</span>
+              <span className="text-blue-600">Motors</span>
             </span>
           </a>
         </Link>
@@ -36,13 +37,13 @@ export function NavBar() {
               disabled={logoutMutation.isPending}
               className="font-medium"
             >
-              {logoutMutation.isPending ? "Logging out..." : "Logout"}
+              {logoutMutation.isPending ? "Выход..." : "Выйти"}
             </Button>
           ) : (
             <Link href="/auth">
               <a>
                 <Button variant="secondary" className="font-medium">
-                  Login
+                  Войти
                 </Button>
               </a>
             </Link>
