@@ -19,6 +19,7 @@ export const cars = pgTable("cars", {
   description: text("description").notNull(),
   imageUrl: text("image_url").notNull(),
   status: text("status").notNull().default("available"),
+  isFavorite: boolean("is_favorite").default(false),
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({
@@ -29,6 +30,7 @@ export const insertUserSchema = createInsertSchema(users).pick({
 export const insertCarSchema = createInsertSchema(cars).omit({
   id: true,
   status: true,
+  isFavorite: true,
 });
 
 export type InsertUser = z.infer<typeof insertUserSchema>;

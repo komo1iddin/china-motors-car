@@ -5,6 +5,13 @@ import { storage } from "./storage";
 import { insertCarSchema } from "@shared/schema";
 import { z } from "zod";
 
+function requireAuth(req: any, res: any, next: any) {
+  if (!req.isAuthenticated()) {
+    return res.status(401).send("Authentication required");
+  }
+  next();
+}
+
 function requireAdmin(req: any, res: any, next: any) {
   if (!req.isAuthenticated() || !req.user.isAdmin) {
     return res.status(403).send("Admin access required");
@@ -26,6 +33,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     const car = await storage.getCar(id);
     if (!car) return res.status(404).send("Car not found");
     res.json(car);
+  });
+
+  // Favorite routes
+  app.post("/api/cars/:id/favorite", requireAuth, async (req, res) => {
+    const id = parseInt(req.params.id);
+    const car = await storage.getCar(id);
+    if (!car) return res.status(404).send("Car not found");
+
+    await storage.toggleFavorite(id);
+    const updatedCar = await storage.getCar(id);
+    res.json(updatedCar);
   });
 
   // Admin car routes

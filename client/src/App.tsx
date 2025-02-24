@@ -8,6 +8,7 @@ import NotFound from "@/pages/not-found";
 import AuthPage from "@/pages/auth-page";
 import HomePage from "@/pages/home-page";
 import CatalogPage from "@/pages/catalog";
+import FavoritesPage from "@/pages/favorites";
 import AdminDashboard from "@/pages/admin/dashboard";
 import CarDetails from "@/pages/cars/[id]";
 import { NavBar } from "@/components/nav-bar";
@@ -19,6 +20,7 @@ function Router() {
       <Route path="/" component={HomePage} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/catalog" component={CatalogPage} />
+      <Route path="/favorites" component={FavoritesPage} />
       <Route path="/cars/:id" component={CarDetails} />
       <ProtectedRoute path="/admin" component={AdminDashboard} />
       <Route component={NotFound} />
