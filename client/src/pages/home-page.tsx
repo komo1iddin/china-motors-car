@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
-import { CarGrid } from "@/components/car-grid";
+import { CarGrid } from "../components/car-grid";
 import { Car } from "@shared/schema";
 import { Search } from "lucide-react";
 
@@ -122,11 +122,14 @@ const sampleCars: Car[] = [
 export default function HomePage() {
   const [search, setSearch] = useState("");
 
-  const { data: cars = sampleCars, isLoading } = useQuery<Car[]>({
+  const { data: apiCars = [], isLoading } = useQuery<Car[]>({
     queryKey: ["/api/cars"],
   });
 
-  const filteredCars = cars.filter(car => 
+  // Use sample data if API returns empty array
+  const cars = apiCars.length > 0 ? apiCars : sampleCars;
+
+  const filteredCars = cars.filter(car =>
     car.make.toLowerCase().includes(search.toLowerCase()) ||
     car.model.toLowerCase().includes(search.toLowerCase())
   );

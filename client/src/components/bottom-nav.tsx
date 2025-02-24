@@ -6,10 +6,10 @@ export function BottomNav() {
   const [location] = useLocation();
 
   const items = [
-    { href: "/", icon: Home, label: "Home" },
-    { href: "/catalog", icon: Grid, label: "Catalog" },
-    { href: "/favorites", icon: Heart, label: "Favorites" },
-    { href: "/profile", icon: User, label: "Profile" },
+    { href: "/", icon: Home, label: "Главная" },
+    { href: "/catalog", icon: Grid, label: "Каталог" },
+    { href: "/favorites", icon: Heart, label: "Избранное" },
+    { href: "/profile", icon: User, label: "Профиль" },
   ];
 
   return (
