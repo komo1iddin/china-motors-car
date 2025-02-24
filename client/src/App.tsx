@@ -10,6 +10,7 @@ import HomePage from "@/pages/home-page";
 import AdminDashboard from "@/pages/admin/dashboard";
 import CarDetails from "@/pages/cars/[id]";
 import { NavBar } from "@/components/nav-bar";
+import { BottomNav } from "@/components/bottom-nav";
 
 function Router() {
   return (
@@ -27,11 +28,12 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen bg-background flex flex-col">
           <NavBar />
-          <main className="container mx-auto px-4 py-8">
+          <main className="container mx-auto px-4 py-8 pb-20 flex-1">
             <Router />
           </main>
+          <BottomNav />
         </div>
         <Toaster />
       </AuthProvider>
