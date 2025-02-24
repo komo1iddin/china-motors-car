@@ -13,8 +13,8 @@ export function NavBar() {
           <a className="flex items-center space-x-2">
             <Car className="h-6 w-6 text-red-600" />
             <span className="font-bold text-lg">
-              <span className="text-red-600">China</span>
-              <span className="text-blue-600">Motors</span>
+              <span className="text-red-600">CHINA</span>
+              <span className="text-blue-700 font-extrabold">MOTORS</span>
             </span>
           </a>
         </Link>

@@ -7,6 +7,7 @@ import { ProtectedRoute } from "./lib/protected-route";
 import NotFound from "@/pages/not-found";
 import AuthPage from "@/pages/auth-page";
 import HomePage from "@/pages/home-page";
+import CatalogPage from "@/pages/catalog";
 import AdminDashboard from "@/pages/admin/dashboard";
 import CarDetails from "@/pages/cars/[id]";
 import { NavBar } from "@/components/nav-bar";
@@ -17,6 +18,7 @@ function Router() {
     <Switch>
       <Route path="/" component={HomePage} />
       <Route path="/auth" component={AuthPage} />
+      <Route path="/catalog" component={CatalogPage} />
       <Route path="/cars/:id" component={CarDetails} />
       <ProtectedRoute path="/admin" component={AdminDashboard} />
       <Route component={NotFound} />
