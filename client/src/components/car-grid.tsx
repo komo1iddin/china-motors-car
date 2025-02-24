@@ -22,11 +22,11 @@ export function CarGrid({ cars, isLoading, isAdmin }: CarGridProps) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/cars"] });
-      toast({ title: "Car deleted successfully" });
+      toast({ title: "Машина успешно удалена" });
     },
     onError: (error: Error) => {
       toast({
-        title: "Failed to delete car",
+        title: "Не удалось удалить машину",
         description: error.message,
         variant: "destructive",
       });
@@ -44,7 +44,7 @@ export function CarGrid({ cars, isLoading, isAdmin }: CarGridProps) {
   if (cars.length === 0) {
     return (
       <div className="text-center text-muted-foreground">
-        No cars found
+        Машины не найдены
       </div>
     );
   }
@@ -60,13 +60,13 @@ export function CarGrid({ cars, isLoading, isAdmin }: CarGridProps) {
               className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
-          
+
           <CardContent className="p-4">
             <h3 className="font-semibold text-lg mb-2">
               {car.year} {car.make} {car.model}
             </h3>
             <div className="flex justify-between text-sm text-muted-foreground mb-2">
-              <span>{car.mileage.toLocaleString()} miles</span>
+              <span>{car.mileage.toLocaleString()} км</span>
               <span className="font-medium text-primary">
                 ${car.price.toLocaleString()}
               </span>
@@ -80,11 +80,11 @@ export function CarGrid({ cars, isLoading, isAdmin }: CarGridProps) {
             <Link href={`/cars/${car.id}`}>
               <a className="flex-1">
                 <Button variant="secondary" className="w-full">
-                  View Details
+                  Подробнее
                 </Button>
               </a>
             </Link>
-            
+
             {isAdmin && (
               <Button
                 variant="destructive"
