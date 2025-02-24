@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
-// Sample data
+// Sample data remains the same
 const sampleCars: Car[] = [
   {
     id: 1,
@@ -26,7 +26,8 @@ const sampleCars: Car[] = [
     mileage: 0,
     description: "Новый электрический седан премиум класса",
     imageUrl: "https://images.unsplash.com/photo-1617788138017-80ad40651399",
-    status: "available"
+    status: "available",
+    isFavorite: false // Added isFavorite field
   },
   {
     id: 2,
@@ -37,7 +38,8 @@ const sampleCars: Car[] = [
     mileage: 0,
     description: "Стильный компактный кроссовер",
     imageUrl: "https://images.unsplash.com/photo-1617788138017-80ad40651399",
-    status: "available"
+    status: "available",
+    isFavorite: false // Added isFavorite field
   },
   // ... other sample cars remain the same
 ];
@@ -45,6 +47,9 @@ const sampleCars: Car[] = [
 export default function CatalogPage() {
   const [search, setSearch] = useState("");
   const [priceRange, setPriceRange] = useState([0, 50000]);
+  const [yearRange, setYearRange] = useState([2000, 2025]); //Added year filter
+  const [mileageRange, setMileageRange] = useState([0, 100000]); //Added mileage filter
+  const [favoritesOnly, setFavoritesOnly] = useState(false); // Added favorites filter
 
   const { data: apiCars = [], isLoading } = useQuery<Car[]>({
     queryKey: ["/api/cars"],
@@ -53,18 +58,23 @@ export default function CatalogPage() {
   // Use sample data if API returns empty array
   const cars = apiCars.length > 0 ? apiCars : sampleCars;
 
-  const filteredCars = cars.filter(car => 
+  const filteredCars = cars.filter(car =>
     (car.make.toLowerCase().includes(search.toLowerCase()) ||
-    car.model.toLowerCase().includes(search.toLowerCase())) &&
+      car.model.toLowerCase().includes(search.toLowerCase())) &&
     car.price >= priceRange[0] &&
-    car.price <= priceRange[1]
+    car.price <= priceRange[1] &&
+    car.year >= yearRange[0] &&
+    car.year <= yearRange[1] &&
+    car.mileage >= mileageRange[0] &&
+    car.mileage <= mileageRange[1] &&
+    (!favoritesOnly || car.isFavorite) //Apply favorites filter
   );
 
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Каталог автомобилей</h1>
-        
+
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="outline" className="lg:hidden">
@@ -90,6 +100,38 @@ export default function CatalogPage() {
                   <span>${priceRange[0].toLocaleString()}</span>
                   <span>${priceRange[1].toLocaleString()}</span>
                 </div>
+              </div>
+              <div className="space-y-2"> {/*Added Year filter*/}
+                <Label>Год выпуска</Label>
+                <Slider
+                  min={2000}
+                  max={2025}
+                  step={1}
+                  value={yearRange}
+                  onValueChange={setYearRange}
+                />
+                <div className="flex justify-between text-sm text-muted-foreground">
+                  <span>{yearRange[0]}</span>
+                  <span>{yearRange[1]}</span>
+                </div>
+              </div>
+              <div className="space-y-2"> {/*Added Mileage filter*/}
+                <Label>Пробег</Label>
+                <Slider
+                  min={0}
+                  max={100000}
+                  step={1000}
+                  value={mileageRange}
+                  onValueChange={setMileageRange}
+                />
+                <div className="flex justify-between text-sm text-muted-foreground">
+                  <span>{mileageRange[0].toLocaleString()}</span>
+                  <span>{mileageRange[1].toLocaleString()}</span>
+                </div>
+              </div>
+              <div className="space-y-2"> {/*Added Favorites filter*/}
+                <Label>Только избранное</Label>
+                <input type="checkbox" checked={favoritesOnly} onChange={(e) => setFavoritesOnly(e.target.checked)}/>
               </div>
             </div>
           </SheetContent>

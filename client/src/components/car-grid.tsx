@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { type Car } from "@shared/schema";
-import { Loader2, Trash } from "lucide-react";
+import { Heart, Loader2, Trash } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface CarGridProps {
   cars: Car[];
@@ -33,6 +34,23 @@ export function CarGrid({ cars, isLoading, isAdmin }: CarGridProps) {
     },
   });
 
+  const toggleFavoriteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await apiRequest("POST", `/api/cars/${id}/favorite`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/cars"] });
+      toast({ title: "Статус избранного обновлен" });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Не удалось обновить статус избранного",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
   if (isLoading) {
     return (
       <div className="flex justify-center">
@@ -52,17 +70,34 @@ export function CarGrid({ cars, isLoading, isAdmin }: CarGridProps) {
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {cars.map((car) => (
-        <Card key={car.id} className="overflow-hidden">
+        <Card 
+          key={car.id} 
+          className="overflow-hidden group transition-transform hover:scale-[1.02] hover:shadow-lg"
+        >
           <div className="aspect-video relative">
             <img
               src={car.imageUrl}
               alt={`${car.year} ${car.make} ${car.model}`}
               className="absolute inset-0 h-full w-full object-cover"
             />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute top-2 right-2 bg-white/80 backdrop-blur-sm hover:bg-white/90"
+              onClick={() => toggleFavoriteMutation.mutate(car.id)}
+              disabled={toggleFavoriteMutation.isPending}
+            >
+              <Heart 
+                className={cn(
+                  "h-5 w-5 transition-colors",
+                  car.isFavorite ? "fill-red-500 text-red-500" : "text-gray-500"
+                )} 
+              />
+            </Button>
           </div>
 
           <CardContent className="p-4">
-            <h3 className="font-semibold text-lg mb-2">
+            <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">
               {car.year} {car.make} {car.model}
             </h3>
             <div className="flex justify-between text-sm text-muted-foreground mb-2">
